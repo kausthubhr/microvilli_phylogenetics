@@ -140,8 +140,9 @@ assigned_ogs_updated = {"Orthogroup_0":["AGRV1_HUMAN"],
                "Orthogroup_22":["USH2A_HUMAN"],
                "Orthogroup_23":["VILI_HUMAN"]}
 
-path2db = r"/g/dey/Comparativegenomics/Mylan/Opis_Choano_92/opis_choanos.fasta"
-path2db = r"/g/dey/Comparativegenomics/Mylan/Species_database/new_species_added_db_18032024.fsa"
+path2db = input("Please enter the path to your database file. Include the filename and extension: \n")
+
+
 if os.name == "nt":
     path2db = serverpath2winpath(path2db)
     listofspecies, speciesdict = getlistofspeciesindb(path2db)
