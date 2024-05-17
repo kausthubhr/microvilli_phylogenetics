@@ -216,12 +216,14 @@ if os.name == 'nt':
         return temp
     
 #%%
+print("Please ensure that this code is run with the folder containing your bbh run as a starting point\n\n")
 os.chdir(r"verified_hits_0")
 base_list = os.listdir()
 base_path = os.getcwd()
-# path2db = r"/g/dey/Kausthubh/3_databases/selected_proteomes/individual_files"
-path2db = r"/mnt/z/Comparativegenomics/Opis_Choano_92/Opis_Choano_individualfiles"
-path2db = r"/g/dey/Comparativegenomics/Mylan/Species_database"
+
+print("Please navigate to the directory containing your proteome files (.fasta). The path to the directory is the only thing required for the code\n\n")
+path2db = setpath()
+
 if os.name == "nt":
     path2databases = [winpath2linuxpath(os.path.join(serverpath2winpath(path2db), x)) for x in os.listdir(serverpath2winpath(path2db)) if not x.startswith(".")]
 else:
