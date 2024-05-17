@@ -10,19 +10,12 @@ from Bio import SeqIO
 import pandas as pd
 import copy
 import subprocess as sp
-# import shutil
-# import numpy as np
 import csv
 from tqdm import tqdm
 from collections import OrderedDict
-# import dill
 from concurrent.futures import ThreadPoolExecutor as tpe
-# from concurrent.futures import as_completed
-# from joblib import Parallel, delayed
 from datetime import datetime
 import tracemalloc
-# import psutil
-# import sys
 
 
 #% function cell
@@ -223,124 +216,19 @@ def retrievebbh(obj1, obj2):
     return list_of_verified_hits
         
 #%%
-# print("\nCreate the directory where you wish to store the results of the run\n\n")
-# print("\n\nSTEP A: Decide where in your system you want to store the results of your searches. All the results of any one run are contained in a single folder with a name and location determined by the user.\n\nThe script will now tell you what your current location in the system is, and will ask you if you want to change it. Please follow the instructions.\n\nIt is good practice to avoid spaces/gaps in your filenames. Please consider using _ (underscore) instead.\n\n")
-# print(f"Current folder location = {os.getcwd()}\n\n")
-# choice = input("Do you want to change your location to a different folder: [y/n] \n")
-# if choice != 'y':
-#     pass
-# if choice =='y':
-#     temp_path = input("Please enter the path to your new location:\n")
-#     os.chdir(temp_path)
+print("\nCreate the directory where you wish to store the results of the run\n\n")
+print("\n\nSTEP A: Decide where in your system you want to store the results of your searches. All the results of any one run are contained in a single folder with a name and location determined by the user.\n\nThe script will now tell you what your current location in the system is, and will ask you if you want to change it. Please follow the instructions.\n\nIt is good practice to avoid spaces/gaps in your filenames. Please consider using _ (underscore) instead.\n\n")
+print(f"Current folder location = {os.getcwd()}\n\n")
+choice = input("Do you want to change your location to a different folder: [y/n] \n")
+if choice != 'y':
+    pass
+if choice =='y':
+    temp_path = input("Please enter the path to your new location:\n")
+    os.chdir(temp_path)
 
-# run_folder = input("\nGive a name for the folder where you will be storing the results of this run:\n\n")
+run_folder = input("\nGive a name for the folder where you will be storing the results of this run:\n\n")
 
-# # run_folder = r"spom_mitprotnet_new"
-# os.mkdir(run_folder)
-# path2runfolder = os.path.join(os.getcwd(), run_folder)
-# # pickle_name = "{0}_pickle.pkl".format(run_folder)
-# # session_pickle = os.path.join(path2runfolder, pickle_name)
 
-# os.chdir(path2runfolder)
-# os.mkdir(r"query_sequences")
-# path2queryseqs = os.path.join(path2runfolder, r"query_sequences")
-# if os.name == 'nt':
-#     linuxpath2queryseqs = winpath2linuxpath(path2queryseqs) + '/'
-
-# print("\n\n\nFor the subsequent steps, it might be more convenient if you, the user, can have all relevant files in one folder\n\n")
-
-# print("STEP B: Select a target database to search. \n\nThis should be one FASTA file containing a set of sequences that can be from one or more species. Usually, this is a collection of proteomes (one proteome per species) that has previously been prepared using the script uniprot_fasta_id_modifier.py. For further details, please consult the Google doc.\n\nIf your target database is in a different folder than the one you are currently at, please navigate to that folder\n\n")
-# print(f"Current folder location = {os.getcwd()}\n\n")
-# choice = input("Do you want to change your location to a different folder: [y/n] \n")
-# if choice != 'y':
-#     pass
-# if choice =='y':
-#     temp_path = input("Please enter the path to your new location:\n")
-#     os.chdir(temp_path)
-
-# print("\n\nTo make the target database selection easier, the script will now print all the available files in the folder and ask you to select one:\n\n")
-# dir_list = os.listdir()
-# for i in range(len(dir_list)):
-#     print("\n{0} - {1}\n".format(int(i+1), dir_list[i]))
-# dir_select = int(input("\nPlease enter the number corresponding to the target database: \n"))
-# dir_select = dir_select - 1
-# targetdbname = dir_list[dir_select]
-# path2targetdb = os.path.join(os.getcwd(), targetdbname)
-# # path2targetdb = r"Z:\Kausthubh\3_databases\selected_proteomes\combined.fasta"
-# if os.name == 'nt':
-#     linuxpath2targetdb = winpath2linuxpath(path2targetdb)
-# listofspecies, speciesdict = getlistofspeciesindb(path2targetdb)
-# del targetdbname, dir_list, dir_select, i 
-# #%
-# print("\n\nSTEP C: Select a starting database that will be the source of your query sequences. \n\nThis should be one FASTA file containing a set of sequences that belongs to a single species. Currently, this has to be a reference proteome from UniProt. For further details, please consult the Google doc.\n\nIf your starting database is in a different folder than the one you are currently at, please navigate to that folder\n\n")
-# print(f"Current folder location = {os.getcwd()}\n\n")
-# choice = input("Do you want to change your location to a different folder: [y/n] \n")
-# if choice != 'y':
-#     pass
-# if choice =='y':
-#     temp_path = input("Please enter the path to your new location:\n")
-#     os.chdir(temp_path)
-
-# print("\n\nTo make the source database selection easier, the script will now print all the available files in the folder and ask you to select one:\n\n")
-# dir_list = os.listdir()
-# for i in range(len(dir_list)):
-#     print("\n{0} - {1}\n".format(int(i+1), dir_list[i]))
-# dir_select = int(input("\nPlease enter the number corresponding to the source database: \n"))
-# dir_select = dir_select - 1
-# sourcedbname = dir_list[dir_select]
-# path2sourcedb = os.path.join(os.getcwd(), sourcedbname)
-# # path2sourcedb = r"Z:\Kausthubh\phmmer_based_bbh_retrieval\fungal_query_files\UP000002485_Schizosaccharomyces_pombe\Schizosaccharomyces_pombe_for_queries.fasta"
-# if os.name == 'nt':
-#     linuxpath2sourcedb = winpath2linuxpath(path2sourcedb)
-# del sourcedbname, dir_list, dir_select, i 
-
-# print("\n\nSTEP D: Select a CSV file containing a list of identifiers. \n\nThese identifiers should have been taken from the starting database. The file should have been formatted using uniprot_id_extraction.py. For further details, please consult the Google doc.\n\nIf your list is in a different folder than the one you are currently at, please navigate to that folder\n")
-# print(f"Current folder location = {os.getcwd()}\n\n")
-# choice = input("Do you want to change your location to a different folder: [y/n] \n")
-# if choice != 'y':
-#     pass
-# if choice =='y':
-#     temp_path = input("Please enter the path to your new location:\n")
-#     os.chdir(temp_path)
-
-# print("\n\nTo make the list selection easier, the script will now print all the available files in the folder and ask you to select one:\n\n")
-# dir_list = os.listdir()
-# for i in range(len(dir_list)):
-#     print("\n{0} - {1}\n".format(int(i+1), dir_list[i]))
-# dir_select = int(input("\nPlease enter the number corresponding to the list of queries: \n"))
-# dir_select = dir_select - 1
-# queryfilename = dir_list[dir_select]
-# querylist = os.path.join(os.getcwd(), queryfilename)
-# # querylist = r"Z:\Kausthubh\phmmer_based_bbh_retrieval\fungal_query_files\UP000002485_Schizosaccharomyces_pombe\mitprotnet_query_uniprot_format.txt"
-# path2querylist = os.getcwd()
-# del queryfilename, dir_list, dir_select, i
-
-# print("\n\nSTEP E: Select a file containing an isoform dictionary. \n\nThis file should have been formatted using isoform_grouping.py. For further details, please consult the Google doc.\n\nIf your dictionary is in a different folder than the one you are currently at, please navigate to that folder\n")
-# print(f"Current folder location = {os.getcwd()}\n\n")
-# choice = input("Do you want to change your location to a different folder: [y/n] \n")
-# if choice != 'y':
-#     pass
-# if choice =='y':
-#     temp_path = input("Please enter the path to your new location:\n")
-#     os.chdir(temp_path)
-
-# print("\n\nTo make the dictionary selection easier, the script will now print all the available files in the folder and ask you to select one:\n\n")
-# dir_list = os.listdir()
-# for i in range(len(dir_list)):
-#     print("\n{0} - {1}\n".format(int(i+1), dir_list[i]))
-# dir_select = int(input("\nPlease enter the number corresponding to the isoform dictionary: \n"))
-# dir_select = dir_select - 1
-# isodictname = dir_list[dir_select]
-# path2isodict = os.path.join(os.getcwd(), isodictname)
-# del isodictname, dir_select, dir_list, i
-
-# try:
-#     del choice, temp_path
-# except NameError:
-#     pass
-# path2isodict = r"Z:\Kausthubh\phmmer_based_bbh_retrieval\fungal_query_files\UP000002485_Schizosaccharomyces_pombe\UP000002485_Schizosaccharomyces_pombe.fasta_isoforms_list.tsv"
-#%%
-run_folder = "core_ptns_spom_182"
 os.mkdir(run_folder)
 path2runfolder = os.path.join(os.getcwd(), run_folder)
 
@@ -348,33 +236,96 @@ os.chdir(path2runfolder)
 os.mkdir(r"query_sequences")
 path2queryseqs = os.path.join(path2runfolder, r"query_sequences")
 if os.name == 'nt':
-    path2queryseqs = winpath2linuxpath(path2queryseqs) + '/'
+    linuxpath2queryseqs = winpath2linuxpath(path2queryseqs) + '/'
 
-print(f"The CPU count is {os.cpu_count()}")
+print("\n\n\nFor the subsequent steps, it might be more convenient if you, the user, can have all relevant files in one folder\n\n")
 
-path2targetdb = r"/g/dey/Kausthubh/phmmer_based_bbh_retrieval/new_orthologs/main_project_updated_sp_db.fsa"
-# path2targetdb = r"Z:\Kausthubh\3_databases\selected_proteomes\combined.fasta"
+print("STEP B: Select a target database to search. \n\nThis should be one FASTA file containing a set of sequences that can be from one or more species. Usually, this is a collection of proteomes (one proteome per species) that has previously been prepared using the script uniprot_fasta_id_modifier.py. For further details, please consult the Google doc.\n\nIf your target database is in a different folder than the one you are currently at, please navigate to that folder\n\n")
+print(f"Current folder location = {os.getcwd()}\n\n")
+choice = input("Do you want to change your location to a different folder: [y/n] \n")
+if choice != 'y':
+    pass
+if choice =='y':
+    temp_path = input("Please enter the path to your new location:\n")
+    os.chdir(temp_path)
+
+print("\n\nTo make the target database selection easier, the script will now print all the available files in the folder and ask you to select one:\n\n")
+dir_list = os.listdir()
+for i in range(len(dir_list)):
+    print("\n{0} - {1}\n".format(int(i+1), dir_list[i]))
+dir_select = int(input("\nPlease enter the number corresponding to the target database: \n"))
+dir_select = dir_select - 1
+targetdbname = dir_list[dir_select]
+path2targetdb = os.path.join(os.getcwd(), targetdbname)
+
 if os.name == 'nt':
-    path2targetdb = serverpath2winpath(path2targetdb)
-# listofspecies, speciesdict = getlistofspeciesindb(path2targetdb)
-listofspecies = ['Abeoforma whisleri',  'Acanthamoeba castellanii',  'Acanthaster planci',  'Allomyces macrogynus',  'Amoebidium appalachense',  'Amphimedon queenslandica',  'Apis mellifera',  'Aspergillus nidulans',  'Aurelia sp Birch-Aquarium-sp1',  'Batrachochytrium dendrobatidis',  'Branchiostoma belcheri',  'Branchiostoma floridae',  'Candida albicans',  'Capsaspora owczarzaki',  'Chromosphaera perkinsii',  'Clytia hemisphaerica',  'Coprinopsis cinerea',  'Corallochytrium limacisporum',  'Creolimax fragrantissima',  'Cryptococcus gattii',  'Cryptococcus neoformans',  'Culex quinquefasciatus',  'Danio rerio',  'Dictyostelium discoideum',  'Didymoeca costata',  'Dracoamoeba jomungandri',  'Entamoeba histolytica',  'Rhizophagus irregularis',  'Rhizopus delemar',  'Lobosporangium transversale',  'Basidiobolus meristosporus',  'Coemansia reversa',  'Mitosporidium daphniae',  'Fonticula alba',  'Gonapodya prolifera',  'Hartaetosiga balthica',  'Hydra vulgaris',  'Ichthyophonus hoferi',  'Ixodes scapularis',  'Laccaria bicolor',  'Lottia gigantea',  'Mastigamoeba balamuthi',  'Ministeria vibrans',  'Mnemiopsis leidyi',  'Monosiga brevicollis',  'Nematostella vectensis',  'Neurospora crassa',  'Octopus bimaculoides',  'Oscarella pearsei',  'Parvularia atlantis',  'Physarum polycephalum',  'Pigoraptor chileana',  'Pigoraptor vietnamica',  'Pirum gemmata',  'Pleurobrachia bachei',  'Rattus norvegicus',  'Rozella allomycis',  'Saccharomyces cerevisiae',  'Salpingoeca rosetta',  'Schizosaccharomyces pombe',  'Sphaeroforma arctica',  'Sphaerothecum destruens',  'Spizellomyces punctatus',  'Stichopus japonicus',  'Strongylocentrotus purpuratus',  'Sycon ciliatum',  'Syssomonas multiformis',  'Takifugu rubripes',  'Thecamonas trahens',  'Trichoplax adhaerens',  'Trichoplax sp H2',  'Homo sapiens',  'Drosophila melanogaster',  'Ustilago maydis 521',  'Xenopus tropicalis']
+    linuxpath2targetdb = winpath2linuxpath(path2targetdb)
+listofspecies, speciesdict = getlistofspeciesindb(path2targetdb)
+del targetdbname, dir_list, dir_select, i 
+#%
+print("\n\nSTEP C: Select a starting database that will be the source of your query sequences. \n\nThis should be one FASTA file containing a set of sequences that belongs to a single species. Currently, this has to be a reference proteome from UniProt. For further details, please consult the Google doc.\n\nIf your starting database is in a different folder than the one you are currently at, please navigate to that folder\n\n")
+print(f"Current folder location = {os.getcwd()}\n\n")
+choice = input("Do you want to change your location to a different folder: [y/n] \n")
+if choice != 'y':
+    pass
+if choice =='y':
+    temp_path = input("Please enter the path to your new location:\n")
+    os.chdir(temp_path)
 
-speciesdict = {'Awhi': 'Abeoforma whisleri',  'Acas': 'Acanthamoeba castellanii',  'Apla': 'Acanthaster planci',  'Amac': 'Allomyces macrogynus',  'Aapp': 'Amoebidium appalachense',  'Aque': 'Amphimedon queenslandica',  'Amel': 'Apis mellifera',  'Anid': 'Aspergillus nidulans',  'Asp': 'Aurelia sp Birch-Aquarium-sp1',  'Bden': 'Batrachochytrium dendrobatidis',  'Bbel': 'Branchiostoma belcheri',  'Bflo': 'Branchiostoma floridae',  'Calb': 'Candida albicans',  'Cowc': 'Capsaspora owczarzaki',  'Cper': 'Chromosphaera perkinsii',  'Chem': 'Clytia hemisphaerica',  'Ccin': 'Coprinopsis cinerea',  'Clim': 'Corallochytrium limacisporum',  'Cfra': 'Creolimax fragrantissima',  'Cgat': 'Cryptococcus gattii',  'Cneo': 'Cryptococcus neoformans',  'Cqui': 'Culex quinquefasciatus',  'Drer': 'Danio rerio',  'Ddis': 'Dictyostelium discoideum',  'Dcos': 'Didymoeca costata',  'Djom': 'Dracoamoeba jomungandri',  'Ehis': 'Entamoeba histolytica',  'Rirr': 'Rhizophagus irregularis',  'Rdel': 'Rhizopus delemar',  'Ltra': 'Lobosporangium transversale',  'Bmer': 'Basidiobolus meristosporus',  'Crev': 'Coemansia reversa',  'Mdap': 'Mitosporidium daphniae',  'Falb': 'Fonticula alba',  'Gpro': 'Gonapodya prolifera',  'Hbal': 'Hartaetosiga balthica',  'Hvul': 'Hydra vulgaris',  'Ihof': 'Ichthyophonus hoferi',  'Isca': 'Ixodes scapularis',  'Lbic': 'Laccaria bicolor',  'Lgig': 'Lottia gigantea',  'Mbal': 'Mastigamoeba balamuthi',  'Mvib': 'Ministeria vibrans',  'Mlei': 'Mnemiopsis leidyi',  'Mbre': 'Monosiga brevicollis',  'Nvec': 'Nematostella vectensis',  'Ncra': 'Neurospora crassa',  'Obim': 'Octopus bimaculoides',  'Opea': 'Oscarella pearsei',  'Patl': 'Parvularia atlantis',  'Ppol': 'Physarum polycephalum',  'Pchi': 'Pigoraptor chileana',  'Pvie': 'Pigoraptor vietnamica',  'Pgem': 'Pirum gemmata',  'Pbac': 'Pleurobrachia bachei',  'Rnor': 'Rattus norvegicus',  'Rall': 'Rozella allomycis',  'Scer': 'Saccharomyces cerevisiae',  'Sros': 'Salpingoeca rosetta',  'Spom': 'Schizosaccharomyces pombe',  'Sarc4': 'Sphaeroforma arctica',  'Sdes': 'Sphaerothecum destruens',  'Spun': 'Spizellomyces punctatus',  'Sjap': 'Stichopus japonicus',  'Spur': 'Strongylocentrotus purpuratus',  'Scil': 'Sycon ciliatum',  'Smul': 'Syssomonas multiformis',  'EP00066': 'Takifugu rubripes',  'Trub': 'Takifugu rubripes',  'Ttra': 'Thecamonas trahens',  'Tadh': 'Trichoplax adhaerens',  'Tsp': 'Trichoplax sp H2',  'Hsap': 'Homo sapiens',  'Dmel': 'Drosophila melanogaster',  'Umay': 'Ustilago maydis 521',  'Xtro': 'Xenopus tropicalis'}
+print("\n\nTo make the source database selection easier, the script will now print all the available files in the folder and ask you to select one:\n\n")
+dir_list = os.listdir()
+for i in range(len(dir_list)):
+    print("\n{0} - {1}\n".format(int(i+1), dir_list[i]))
+dir_select = int(input("\nPlease enter the number corresponding to the source database: \n"))
+dir_select = dir_select - 1
+sourcedbname = dir_list[dir_select]
+path2sourcedb = os.path.join(os.getcwd(), sourcedbname)
 
-
-path2sourcedb = r"/g/dey/Kausthubh/phmmer_based_bbh_retrieval/new_orthologs/spom/query_files/Schizosaccharomyces_pombe_for_queries.fasta"
 if os.name == 'nt':
-    path2sourcedb = serverpath2winpath(path2sourcedb)
+    linuxpath2sourcedb = winpath2linuxpath(path2sourcedb)
+del sourcedbname, dir_list, dir_select, i 
 
+print("\n\nSTEP D: Select a CSV file containing a list of identifiers. \n\nThese identifiers should have been taken from the starting database. The file should have been formatted using uniprot_id_extraction.py. For further details, please consult the Google doc.\n\nIf your list is in a different folder than the one you are currently at, please navigate to that folder\n")
+print(f"Current folder location = {os.getcwd()}\n\n")
+choice = input("Do you want to change your location to a different folder: [y/n] \n")
+if choice != 'y':
+    pass
+if choice =='y':
+    temp_path = input("Please enter the path to your new location:\n")
+    os.chdir(temp_path)
 
-querylist = r"/g/dey/Kausthubh/phmmer_based_bbh_retrieval/new_orthologs/spom/query_files/gene_list_182.t_query_uniprot_format.txt"
-if os.name == 'nt':
-    querylist = serverpath2winpath(querylist)
+print("\n\nTo make the list selection easier, the script will now print all the available files in the folder and ask you to select one:\n\n")
+dir_list = os.listdir()
+for i in range(len(dir_list)):
+    print("\n{0} - {1}\n".format(int(i+1), dir_list[i]))
+dir_select = int(input("\nPlease enter the number corresponding to the list of queries: \n"))
+dir_select = dir_select - 1
+queryfilename = dir_list[dir_select]
+querylist = os.path.join(os.getcwd(), queryfilename)
 
+path2querylist = os.getcwd()
+del queryfilename, dir_list, dir_select, i
 
-path2isodict = r"/g/dey/Kausthubh/phmmer_based_bbh_retrieval/new_orthologs/spom/query_files/UP000002485_Schizosaccharomyces_pombe.fasta_isoforms_list.tsv"
+print("\n\nSTEP E: Select a file containing an isoform dictionary. \n\nThis file should have been formatted using isoform_grouping.py. For further details, please consult the Google doc.\n\nIf your dictionary is in a different folder than the one you are currently at, please navigate to that folder\n")
+print(f"Current folder location = {os.getcwd()}\n\n")
+choice = input("Do you want to change your location to a different folder: [y/n] \n")
+if choice != 'y':
+    pass
+if choice =='y':
+    temp_path = input("Please enter the path to your new location:\n")
+    os.chdir(temp_path)
 
-prefix = r"main_project_db_75" 
+print("\n\nTo make the dictionary selection easier, the script will now print all the available files in the folder and ask you to select one:\n\n")
+dir_list = os.listdir()
+for i in range(len(dir_list)):
+    print("\n{0} - {1}\n".format(int(i+1), dir_list[i]))
+dir_select = int(input("\nPlease enter the number corresponding to the isoform dictionary: \n"))
+dir_select = dir_select - 1
+isodictname = dir_list[dir_select]
+path2isodict = os.path.join(os.getcwd(), isodictname)
+del isodictname, dir_select, dir_list, i
+
+ 
 #%%
 os.chdir(r"query_sequences")
 queries = open(querylist)
@@ -579,7 +530,7 @@ del i
 
 # dill.dump_session(session_pickle)
 #%
-# prefix = #input("\nPlease enter a suitable prefix to add to the reverse search result files. This is to make it more straightforward to understand which database was the search done\n\n")
+prefix = input("\nPlease enter a suitable prefix to add to the reverse search result files. This is to make it more straightforward to understand which database was the search done\n\n")
 cmd_list = []
 for i in best_hit_per_species_paths:
     if os.name == 'nt':
