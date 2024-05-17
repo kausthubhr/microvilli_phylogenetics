@@ -57,7 +57,7 @@ This script uses
 - [MAFFT](https://mafft.cbrc.jp/alignment/software/) for building alignments
 - [TrimAl](https://vicfero.github.io/trimal/) in the "gappyout" mode for trimming the alignments
 - [FastTree](http://www.microbesonline.org/fasttree/) or [IQ-TREE](http://www.iqtree.org/) for building maximum-likelihood phylogenetic trees
-  - IQ-TREE is very much slower and computationall)y intensive when compared to FastTree. You can decide which algorithm to use by checking line number 179/180 in the tree building script. Make sure that the algorithm you want to use is not commented i.e. starts with a "#"
+  - IQ-TREE is very much slower and computationally intensive when compared to FastTree. You can decide which algorithm to use by checking line number 179/180 in the tree building script. Make sure that the algorithm you want to use is not commented i.e. starts with a "#"
  
 The phylogenetic trees and alignments were manually analysed prior to continuing the analysis. The trees were visualized using either [FigTree](https://github.com/rambaut/figtree) or [iTOL](https://itol.embl.de/).
 
