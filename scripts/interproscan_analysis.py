@@ -13,6 +13,7 @@ import pandas as pd
 
 # getting query sequences
 
+print("Please ensure that this code is run with the folder containing your bbh run as a starting point\n\n")
 og_seqs = []
 os.chdir("query_sequences")
 temp = os.listdir()
@@ -22,7 +23,11 @@ del i, temp
 
 os.chdir(os.path.dirname(os.getcwd()))
 
-os.chdir([x for x in os.listdir() if x.endswith("new_species")][0])
+dirname = [x for x in os.listdir() if x.endswith("new_species")]
+if not dirname:
+    dirname = [x for x in os.listdir() if x.endswith("final")]
+    
+os.chdir(dirname[0])
 base_list = os.listdir()
 base_path = os.getcwd()
 
