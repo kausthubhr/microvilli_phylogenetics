@@ -147,7 +147,7 @@ assigned_ogs_updated = {"Orthogroup_0":["AGRV1_HUMAN"],
 # =============================================================================
 base_list = os.listdir()
 base_path = os.getcwd()
-path2db = r"/g/dey/Comparativegenomics/Mylan/Opis_Choano_92/opis_choanos.fasta"
+path2db = input("Please enter the path to your database file. Include the filename and extension too:\n")
 
 if os.name == "nt":
     path2db = serverpath2winpath(path2db)
