@@ -46,7 +46,7 @@ conda activate microvilli_phylogenetics
 ```
 
 ### 2. Identifying best, bidirectional hits for the query sequences
-Please run the script for [retrieving hits](https://github.com/kausthubhr/microvilli_phylogenetics/blob/e19201428b6425a960b6fc9c519dc54d5e71df83/scripts/phmmer_based_bbh_retrieval_new_updated.py). All the required steps is detailed in the script itself.
+Please run the script for [retrieving hits](https://github.com/kausthubhr/microvilli_phylogenetics/blob/e19201428b6425a960b6fc9c519dc54d5e71df83/scripts/phmmer_based_bbh_retrieval_new_updated.py). All the required steps are detailed in the script itself.
 
 This script uses phmmer from the HMMER suite of tools in the environment to identify the best hit in each proteome that maps back to the original query protein in the human proteome. The searches are parallelized and can use a significant amount of memory
 
